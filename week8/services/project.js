@@ -38,6 +38,7 @@ const create = ({ name, abstract, authors, tags }) => {
 const getById = (id) => {
   return users.getById(id);
 };
+
 /* Return all projects */
 const getAll = () => {
   return projects.getAll();
