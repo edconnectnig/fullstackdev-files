@@ -2,11 +2,13 @@
 const fs = require("fs");
 const path = require("path");
 const Users = require("../models/users").Users;
+const User = require("../models/users").User;
 
 // load data file
 const usersFile = path.join(__dirname, "../users.json");
 
 // helper functions
+const saveJsonFile = (file, data) => fs.writeFileSync(file, JSON.stringify({ data }));
 const getFileAsJson = (file) => JSON.parse(fs.readFileSync(file));
 const saveUsersToFile = (data) => saveJsonFile(usersFile, data);
 const id = () => Math.random().toString(36).substring(2);
@@ -48,7 +50,7 @@ const authenticate = (email, password) => {
   if (users.authenticate(email, password)) {
     return [true, users.getByEmail(email)];
   } else {
-    return [false, users.errors];
+    return [false, ["Invalid email/password"]];
   }
 };
 
