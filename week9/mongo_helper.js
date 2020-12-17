@@ -7,13 +7,18 @@ const toSentenceCase = (str) => str.charAt(0).toUpperCase() + str.substr(1);
  * Example usage :
  * 
  *  import helper from 'mongo_helper';
+ *  
+ *  ...
  *  try {
  *   const doc = new Model({...})
- *   return await doc.save()
+ *   const savedDoc =  await doc.save()
  *  } catch (error) {
  *    // converts the error object to an array of error messages.
- *    return helper.translateError(error)
+ *    const errors =  helper.translateError(error)
  *  }
+ * 
+ * ...
+ * 
  * @param {*} err 
  */
 const translateError = (err) => {
