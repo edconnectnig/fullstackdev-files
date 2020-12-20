@@ -1,0 +1,17 @@
+{
+  "name": "unit-testing",
+  "version": "1.0.0",
+  "description": "unit testing lessons",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node src/calculator.test.js"
+  },
+  "author": "",
+  "type": "commonjs",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11"
+  }
+}
