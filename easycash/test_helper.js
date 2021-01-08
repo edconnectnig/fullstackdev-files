@@ -1,5 +1,8 @@
 const userService = require("./services/user_service");
+const User = require('./models/user')
 const faker = require("faker");
+
+const getUser = async (id) => await User.findById(id)
 
 const givenUser = async (data) => {
   const user = {
@@ -40,6 +43,7 @@ const givenUserWithBalance = async (data, balance) => {
 };
 
 module.exports = {
+  getUser,
   givenUser,
   givenUserWithBalance,
 };

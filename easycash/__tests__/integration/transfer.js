@@ -1,13 +1,18 @@
 /**
  * @jest-environment node
  */
-// import modules
+
 const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../../server");
-const { givenUser, givenUserWithBalance } = require("../../test_helper");
+const {
+  getUser,
+  givenUser,
+  givenUserWithBalance,
+} = require("../../test_helper");
 
-describe("Transfer from one user to another", () => {
+describe("/api/transfer: Transfer from one user to another", () => {
+
   // connect to Mongodb memory server started by Jest
   // the connection url is automatically provided by Jest in process.env.MONGO_URL.
   beforeAll(async () => {
@@ -31,7 +36,7 @@ describe("Transfer from one user to another", () => {
       },
       120000
     );
-    const recipient = await givenUser();
+    let recipient = await givenUser();
 
     // act
     const resp = await request(app)
@@ -43,6 +48,10 @@ describe("Transfer from one user to another", () => {
         amount: 20000,
       });
 
+    recipient = await getUser(recipient.id)
+    expect(recipient.balance).toEqual(20000)
+
+    
     // verify
     expect(resp.statusCode).toEqual(200);
     expect(resp.body.status).toBe("success");
@@ -58,7 +67,7 @@ describe("Transfer from one user to another", () => {
       10000
     );
     const recipient = await givenUser({});
-    
+
     // act
     const resp = await request(app)
       .post("/api/transfer")

@@ -166,6 +166,14 @@ const transfer = async (userId, recpId, source, amount, note) => {
               balance: user.balance - amount,
             }
           );
+          await User.updateOne(
+            {
+              _id: recp._id,
+            },
+            {
+              balance: recp.balance + amount,
+            }
+          );
         }
         const txn = new Transaction();
         txn.sender = user._id;
