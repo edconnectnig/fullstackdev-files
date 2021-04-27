@@ -1,51 +1,25 @@
 import userService from "./user.service";
-const User = require("./user.model");
-const faker = require("faker");
+import User from "./user.model";
+import faker from "faker";
 
+/**
+ * Return user with id
+ * @param {string} id 
+ * @returns 
+ */
 const getUser = async (id) => await User.findById(id);
 
-const givenUser = async (data) => {
-  const user = {
-    firstname: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    userid: faker.internet.userName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    ...data,
-  };
-  return await userService.register(
-    user.firstname,
-    user.lastname,
-    user.userid,
-    user.email,
-    user.password
-  );
-};
-
-const givenUserWithBalance = async (data, balance) => {
-  data = {
-    firstname: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    userid: faker.internet.userName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    ...data,
-  };
-  const user = await userService.register(
-    data.firstname,
-    data.lastname,
-    data.userid,
-    data.email,
-    data.password
-  );
-  await user.increaseBalance(balance);
-  return user;
-};
-
+/**
+ * Create a new user account with a bank account.
+ * @param {Object} data 
+ * @param {string bankName 
+ * @param {string} acctNumber 
+ * @returns {User}
+ */
 const givenUserWithBankAccount = async (
   data,
-  bankName = "GTB",
-  acctNumber = "12345678"
+  bankName,
+  acctNumber
 ) => {
   data = {
     firstname: faker.name.firstName(),
@@ -68,7 +42,5 @@ const givenUserWithBankAccount = async (
 
 module.exports = {
   getUser,
-  givenUser,
-  givenUserWithBalance,
   givenUserWithBankAccount,
 };
