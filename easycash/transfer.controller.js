@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 
-const userService = require("../services/user_service");
+const userService = require("./user.service");
 
 router.post(
   "/transfer",

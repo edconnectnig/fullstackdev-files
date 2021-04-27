@@ -9,12 +9,13 @@ const {
   getUser,
   givenUser,
   givenUserWithBalance,
-} = require("../../test_helper");
+} = require("../../test.helper");
 
 describe("/api/transfer: Transfer from one user to another", () => {
 
   // connect to Mongodb memory server started by Jest
   // the connection url is automatically provided by Jest in process.env.MONGO_URL.
+
   beforeAll(async () => {
     await mongoose.connect(process.env.MONGO_URL, {
       useCreateIndex: true,

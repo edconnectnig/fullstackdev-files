@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const passport = require('passport');
 const { BasicStrategy } = require("passport-http");
-const User = require('./models/user');
+const User = require('./user.model');
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use(
   })
 );
 
-app.use("/api", require("./controllers/transfer"));
+app.use("/api", require("./transfer.controller"));
 
 // setup basic authentication using passport
 passport.use(

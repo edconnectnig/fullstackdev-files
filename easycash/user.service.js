@@ -1,6 +1,6 @@
-const User = require("../models/user");
-const Account = require("../models/account");
-const Transaction = require("../models/transaction");
+const User = require("./user.model");
+const Account = require("./account.model");
+const Transaction = require("./transaction.model");
 
 /**
  * Create a new user and also creates cash account for the user.
@@ -71,6 +71,7 @@ const addBankAccount = async (userId, bankName, acctNumber) => {
   }
 };
 
+
 /**
  * Create new credit card account for a user.
  * @param {string} userId
@@ -125,6 +126,7 @@ const addCash = async (userId, amount) => {
  * @param {number} amount
  * @param {string} note
  */
+
 const transfer = async (userId, recpId, source, amount, note) => {
   // Lookup send and recipient users.
   const user = await User.findByUserId(userId);
@@ -151,7 +153,8 @@ const transfer = async (userId, recpId, source, amount, note) => {
   // ACID (atomicity, consistency, isolation, durability) is a set of properties of database
   // transactions intended to guarantee data validity despite errors, power failures, and other
   // mishaps.
-  // Atomicity is the guarantee that series of database operations in an atomic transaction will /// either all occur (a successful operation), or none will occur (an unsuccessful operation).
+  // Atomicity is the guarantee that series of database operations in an atomic transaction will
+  // either all occur (a successful operation), or none will occur (an unsuccessful operation).
   // Transaction ensures that a series of operations all succeed or are all rolled back.
   const session = await Transaction.startSession();
   try {

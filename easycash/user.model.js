@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 
 // Import Account model.
-const Account = require("./account");
+const Account = require("./account.model");
 
 // Create alias (or shortcut) for the mongoose.Schema class
 const Schema = mongoose.Schema;

@@ -1,5 +1,5 @@
-const userService = require("./services/user_service");
-const User = require('./models/user')
+const userService = require("./user.service");
+const User = require('./user.model')
 const faker = require("faker");
 
 const getUser = async (id) => await User.findById(id)
