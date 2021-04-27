@@ -27,6 +27,7 @@ app.use(
 );
 
 app.use("/api", require("./transfer.controller"));
+app.use("/api", require("./user.controller"));
 
 // setup basic authentication using passport
 passport.use(

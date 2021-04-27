@@ -2,7 +2,7 @@ import axios from "axios";
 
 const debitBankAccount = async (bankName, acctNumber, amount) => {
   try {
-    await axios.post(
+    const resp = await axios.post(
       "http://api.flutterwave.com/payment",
       {
         bank_name: bankName,
@@ -12,13 +12,16 @@ const debitBankAccount = async (bankName, acctNumber, amount) => {
       {
         headers: {
           client_id: process.env.flutter_client_id,
-          client_scree: process.env.flutter_client_id,
+          client_secret: process.env.flutter_client_secret,
         },
       }
     );
-    return "success";
+   return resp;
   } catch (error) {
-     return "faied"
+    return {
+        status: 'failed',
+        error
+    }
   }
 };
 

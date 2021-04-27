@@ -2,14 +2,19 @@
  * @jest-environment node
  */
 
+import axios from "axios";
+
 const mongoose = require("mongoose");
 const request = require("supertest");
-const app = require("../../server");
+const app = require("./server");
 const {
   getUser,
   givenUser,
   givenUserWithBalance,
-} = require("../../test.helper");
+} = require("./test.helper");
+
+jest.mock("axios");
+
 
 describe("/api/transfer: Transfer from one user to another", () => {
 

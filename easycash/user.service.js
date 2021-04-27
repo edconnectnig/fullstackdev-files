@@ -1,6 +1,7 @@
 const User = require("./user.model");
 const Account = require("./account.model");
 const Transaction = require("./transaction.model");
+import BankService from "./bank.service";
 
 /**
  * Create a new user and also creates cash account for the user.
@@ -57,20 +58,13 @@ const addBankAccount = async (userId, bankName, acctNumber) => {
     await acct.save();
 
     // add bank account to user's account list.
-    await User.updateOne(
-      {
-        _id: user._id,
-      },
-      {
-        accounts: [...user.accounts, acct._id],
-      }
-    );
-    return acct;
+    user.accounts.push(acct._id);
+    await user.save();
+    return user;
   } catch (error) {
     console.log(error);
   }
 };
-
 
 /**
  * Create new credit card account for a user.
@@ -112,11 +106,42 @@ const addCreditCard = async (userId, cardNumber, exp) => {
 /**
  * Increase user's cash balance
  * @param {string} userId
+ * @param {string} acctId
  * @param {number} amount
  */
-const addCash = async (userId, amount) => {
+const addCash = async (userId, acctId, amount) => {
   const user = await User.findByUserId(userId);
-  await user.increaseBalance(amount);
+  const acct = await Account.findById(acctId).exec();
+  if (!user) {
+    throw new Error("User not found");
+  }
+  if (!acct || user.accounts.indexOf(acctId) < 0) {
+    throw new Error("Account not found");
+  }
+  if (acct.type === "Cash") {
+    throw new Error("Invalid account");
+  }
+
+  const {status, error} = await BankService.debitBankAccount(
+    acct.bankInfo.bankName,
+    acct.bankInfo.acctNumber,
+    amount
+  );
+  const txn = new Transaction();
+  txn.sender = user._id;
+  txn.recipient = user._id;
+  txn.sourceAcct = acctId;
+  txn.destAcct = await user.getCashAccount();
+  txn.amount = amount;
+
+  if (status === "success") {
+    txn.status = "Completed";
+    await user.increaseBalance(amount);
+    return await txn.save();
+  } else {
+    txn.save();
+    throw new Error(error)
+  }
 };
 /**
  * Send money from one user to another.
@@ -192,7 +217,7 @@ const transfer = async (userId, recpId, source, amount, note) => {
     session.endSession();
   }
 };
-module.exports = {
+export default {
   register,
   addBankAccount,
   addCreditCard,
